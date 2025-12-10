@@ -1,0 +1,28 @@
+https://www150.statcan.gc.ca/t1/tbl1/en/tv.action?pid=1010001001
+
+Ontario hasn't changed 
+https://www.ontario.ca/document/beer-and-wine-tax
+
+alberta has changed them in 2023 with further changeds running through 2025
+
+sask has other structural changes and might not be a good candidate
+
+bc had a major overhaul in 2015/16 with a 2020 change from retail to wholesale pricing for restraunts(interesting control)
+
+manitoba had some minor changes in 2024(good enough to be a control)
+
+
+We're looking at if price elasticities of alcohol have changed since the pandemic. This breaks down into why people are drinking less in canada since the pandemic.  
+How much of this is price increases(use wine and cider because they skew richer), substitution(unsure how to measure this), or behavioural change(look at bar sales?).
+Potential confounds:
+	population:
+		aging country, older people drink less.
+		Record levels of immigration, eg muslim majority countries drink less
+	behavioural:
+		are people going out as much?
+		is this just substitution
+	price increase:
+		how to parse more quality vs quantity
+		
+	
+Every province is seeing less drinking, we're looking at how much of this is price increases, substitution, or behavioural change. we're going to have to separate each of these 
