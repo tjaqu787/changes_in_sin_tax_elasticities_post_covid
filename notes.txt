@@ -47,3 +47,6 @@ Craft beer/premium spirits premium: Quality-quantity tradeoff you mentioned
 Every province is seeing less drinking, we're looking at how much of this is price increases, substitution, or behavioural change. we're going to have to separate each of these 
 
 11-10-0240-01 - for incomes
+Table: 17-10-0005-01 - population
+18-10-0007-01 - basket weights
+18-10-0004-01 - CPI
