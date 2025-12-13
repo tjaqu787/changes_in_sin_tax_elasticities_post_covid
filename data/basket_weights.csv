@@ -1,99 +1,66 @@
-﻿"Basket weights of the Consumer Price Index, Canada, provinces, Whitehorse, Yellowknife and Iqaluit c 1 2 3"
-"Frequency: Occasional"
-"Table: 18-10-0007-01 (formerly CANSIM 326-0031)"
-"Release date: 2025-06-17"
-"Geography: Canada, Province or territory, Census subdivision"
-""
-""
-
-,,"Price period of weight","Weight at basket link month prices 6",,,,,,
-"Geography","Products and product groups 4 5","Geographic distribution of weight","2015","2017","2020","2021","2022","2023","2024"
-"Canada","Food purchased from stores",,"Percent",,,,,,
-,,"Distribution to selected geographies","11.21","11.31","11.74","11.14","11.04","10.72","10.86"
-,"Food purchased from restaurants",,"5.03","5.17","4.50","4.80","5.61","5.97","6.05"
-,"Rented accommodation",,"6.35","6.59","6.63","6.77","7.03","7.37","7.56"
-,"Owned accommodation",,"16.50","16.80","19.73","19.46","17.96","18.55","18.76"
-,"Water, fuel and electricity",,"4.29","3.96","3.67","3.57","3.35","3.22","3.08"
-,"Household operations, furnishings and equipment",,"12.97","12.80","14.89","14.50","14.36","13.01","13.25"
-,"Clothing and footwear",,"5.44","5.17","3.99","4.31","4.73","4.55","4.38"
-,"Transportation",,"19.70","19.95","15.96","16.91","16.44","16.90","16.90"
-,"Health and personal care",,"5.00","4.79","4.68","4.62","5.03","5.23","5.05"
-,"Recreation, education and reading",,"10.89","10.24","9.40","9.29","9.92","10.27","10.12"
-,"Alcoholic beverages",,"1.67","1.74","2.85","2.83","2.94","2.69","2.58"
-,"Tobacco products and smokers' supplies",,"0.96","0.94","1.44","1.28","1.23","1.11","1.01"
-,"Recreational cannabis",,"..","0.53","0.50","0.52","0.35","0.40","0.39"
-"Ontario","Food purchased from stores",,"10.59","10.78","11.05","10.47","10.13","9.85","10.46"
-,"Food purchased from restaurants",,"4.64","4.83","4.29","4.62","5.40","5.87","6.12"
-,"Rented accommodation",,"6.57","6.77","6.54","6.45","6.73","7.60","7.48"
-,"Owned accommodation",,"18.05","18.81","22.58","22.79","20.43","20.48","20.34"
-,"Water, fuel and electricity",,"4.54","3.89","3.72","3.61","3.51","3.31","3.06"
-,"Household operations, furnishings and equipment",,"12.87","12.49","14.83","14.44","14.53","12.90","13.36"
-,"Clothing and footwear",,"5.59","5.26","3.63","3.90","4.38","4.25","4.25"
-,"Transportation",,"19.49","19.80","16.09","16.72","16.23","16.89","16.71"
-,"Health and personal care",,"4.64","4.35","4.39","4.23","4.67","4.92","4.88"
-,"Recreation, education and reading",,"10.83","10.28","8.91","9.01","10.06","10.43","9.92"
-,"Alcoholic beverages",,"1.48","1.49","2.36","2.37","2.59","2.30","2.26"
-,"Tobacco products and smokers' supplies",,"0.71","0.70","1.07","0.93","1.01","0.79","0.75"
-,"Recreational cannabis",,"..","0.55","0.53","0.46","0.35","0.41","0.41"
-"Manitoba","Food purchased from stores",,"10.58","11.03","11.68","11.33","11.56","11.43","11.03"
-,"Food purchased from restaurants",,"5.12","4.84","4.76","4.62","5.19","5.44","5.27"
-,"Rented accommodation",,"4.18","5.43","6.27","6.25","6.38","6.53","6.44"
-,"Owned accommodation",,"15.73","14.54","15.14","14.84","13.23","13.49","14.43"
-,"Water, fuel and electricity",,"4.64","4.03","4.35","4.53","4.46","3.92","3.52"
-,"Household operations, furnishings and equipment",,"13.78","13.77","15.26","15.42","14.78","14.22","14.10"
-,"Clothing and footwear",,"5.39","5.36","3.80","4.22","4.51","4.83","4.73"
-,"Transportation",,"21.75","21.69","17.01","18.34","17.44","17.72","17.85"
-,"Health and personal care",,"5.28","4.87","5.14","4.72","5.66","5.59","5.85"
-,"Recreation, education and reading",,"10.73","11.04","11.14","10.62","12.14","12.23","12.01"
-,"Alcoholic beverages",,"1.67","1.45","3.00","3.05","2.90","2.84","3.03"
-,"Tobacco products and smokers' supplies",,"1.16","1.40","2.09","1.52","1.35","1.31","1.25"
-,"Recreational cannabis",,"..","0.57","0.37","0.53","0.39","0.46","0.48"
-"Alberta","Food purchased from stores",,"10.47","11.01","12.18","11.13","10.74","10.87","10.38"
-,"Food purchased from restaurants",,"5.48","5.58","5.47","5.29","6.16","6.34","5.81"
-,"Rented accommodation",,"6.22","5.68","5.77","5.81","5.91","5.49","6.12"
-,"Owned accommodation",,"15.35","15.48","16.55","15.83","16.14","18.02","19.12"
-,"Water, fuel and electricity",,"4.16","5.09","4.03","4.14","3.85","3.67","3.48"
-,"Household operations, furnishings and equipment",,"13.48","12.93","15.33","15.26","15.03","13.67","13.60"
-,"Clothing and footwear",,"5.76","5.15","4.00","4.73","5.42","4.86","4.22"
-,"Transportation",,"20.03","20.28","15.98","17.63","16.97","17.51","17.62"
-,"Health and personal care",,"4.90","4.81","4.73","4.99","4.76","4.73","4.86"
-,"Recreation, education and reading",,"11.31","10.49","10.37","9.63","10.03","10.00","10.35"
-,"Alcoholic beverages",,"1.75","1.84","2.83","2.90","2.75","2.65","2.41"
-,"Tobacco products and smokers' supplies",,"1.09","1.14","2.25","1.97","1.73","1.66","1.52"
-,"Recreational cannabis",,"..","0.51","0.50","0.69","0.52","0.54","0.51"
-"British Columbia","Food purchased from stores",,"10.65","10.56","11.33","10.70","11.20","10.42","10.17"
-,"Food purchased from restaurants",,"5.57","5.62","4.12","4.51","5.67","6.09","6.20"
-,"Rented accommodation",,"6.71","7.16","7.38","8.38","9.10","8.56","9.20"
-,"Owned accommodation",,"18.97","19.77","22.68","22.31","20.11","22.15","21.54"
-,"Water, fuel and electricity",,"3.21","2.91","2.88","2.35","2.17","2.33","2.24"
-,"Household operations, furnishings and equipment",,"12.09","12.14","14.65","14.26","13.67","12.61","12.63"
-,"Clothing and footwear",,"4.92","4.63","4.08","4.40","4.70","4.45","4.36"
-,"Transportation",,"18.41","19.08","13.72","14.54","14.35","14.36","15.03"
-,"Health and personal care",,"5.06","4.73","4.52","4.14","4.75","4.61","4.23"
-,"Recreation, education and reading",,"12.10","10.48","9.51","9.67","9.69","10.40","10.67"
-,"Alcoholic beverages",,"1.46","1.66","3.23","3.03","2.95","2.63","2.44"
-,"Tobacco products and smokers' supplies",,"0.86","0.70","1.30","1.14","1.28","1.00","0.87"
-,"Recreational cannabis",,"..","0.54","0.59","0.57","0.37","0.41","0.41"
-
-Symbol legend:
-.., not available for a specific reference period
-
-
-"Table Corrections:"
-Date,Note
-"","The 2017 basket weights for five special aggregate series were updated to include the weight of medicinal cannabis and recreational cannabis. Data points for the following series were updated across applicable geographies: non-durable goods excluding food purchased from stores; non-durable goods excluding food purchased from stores and energy; goods excluding food purchased from stores; goods excluding food purchased from stores and energy; and all-items excluding eight of the most volatile components as defined by the Bank of Canada and excluding the effect of changes in indirect taxes."
-
-
-
-Footnotes:
-1,"Figures may not add up as a result of rounding."
-2,"The weights for the 2001 basket were originally updated with the release of the January 2003 Consumer Price Index (CPI). The basket link month of these weights was December 2002. However, the 2001 basket weights were adjusted with the release of the July 2004 CPI. The basket link month of these adjusted weights was June 2004. This table only provides the adjusted weights. Users who want to reconstruct indexes between January 2003 and July 2004 may obtain a copy of the original 2001 basket weights by contacting the Consumer Prices Division by <a href="mailto:statcan.cpddisseminationunit-dpcunitedediffusion.statcan@canada.ca">email</a>."
-3,"Basket weights in this table, which are published at a precision of two decimal places, correspond to basic aggregate, published-level indexes of the Consumer Price Index (CPI). They are meant to provide users with an understanding of the relative importance of the various sub-indexes and are sufficiently detailed for most analytical purposes. To ensure a greater level of accuracy, Statistics Canada calculates the CPI with full-precision weights at the lower, elementary aggregate level of the index structure. Therefore, this table provides up to 180 basic product classes for Canada, 10 provinces, Whitehorse, Yellowknife and Iqaluit, while the actual calculation of the CPI is based on nearly 518 product categories and 19 geographic classes."
-4,"This table provides weights for various Consumer Price Index (CPI) baskets. The CPI product classification often changes with the introduction of new baskets in order to reflect changes in consumer spending habits. Complete weighting schemes are provided for the  CPI baskets since 2005; partial weighting schemes are provided for earlier baskets where there is consistency in the product classification. Users who would like to have the complete weighting schemes for CPI baskets prior to 2005 may contact the Consumer Prices Division by <a href="mailto:statcan.cpddisseminationunit-dpcunitedediffusion.statcan@statcan.gc.ca">email</a>."
-5,"A limited number of basket weights previously published in this table were corrected on February 20, 2017 to bring them in line with the weights used in the aggregation of the Consumer Price Index (CPI). These corrections had no effect on previously published CPI values and on the calculation of the CPI in any of the basket weight periods."
-6,"These weights are based on consumer expenditures expressed in the prices of the basket link month. A list of baskets and reference periods is available in the <a href="https://www.statcan.gc.ca/en/statistical-programs/document/2301_D70_V1" rel="external noopener noreferrer" target="_blank"> Detailed chronology of basket updates and changes to the Consumer Price Index (CPI) (opens new window)</a> table, on the Statistics Canada website."
-
-
-
-"How to cite: Statistics Canada. Table 18-10-0007-01  Basket weights of the Consumer Price Index, Canada, provinces, Whitehorse, Yellowknife and Iqaluit"
-https://www150.statcan.gc.ca/t1/tbl1/en/tv.action?pid=1810000701
+﻿Geography,Products and product groups,2015,2017,2020,2021,2022,2023,2024
+Canada,Food purchased from stores,11.21,11.31,11.74,11.14,11.04,10.72,10.86
+Canada,Food purchased from restaurants,5.03,5.17,4.5,4.8,5.61,5.97,6.05
+Canada,Rented accommodation,6.35,6.59,6.63,6.77,7.03,7.37,7.56
+Canada,Owned accommodation,16.5,16.8,19.73,19.46,17.96,18.55,18.76
+Canada,"Water, fuel and electricity",4.29,3.96,3.67,3.57,3.35,3.22,3.08
+Canada,"Household operations, furnishings and equipment",12.97,12.8,14.89,14.5,14.36,13.01,13.25
+Canada,Clothing and footwear,5.44,5.17,3.99,4.31,4.73,4.55,4.38
+Canada,Transportation,19.7,19.95,15.96,16.91,16.44,16.9,16.9
+Canada,Health and personal care,5,4.79,4.68,4.62,5.03,5.23,5.05
+Canada,"Recreation, education and reading",10.89,10.24,9.4,9.29,9.92,10.27,10.12
+Canada,Alcoholic beverages,1.67,1.74,2.85,2.83,2.94,2.69,2.58
+Canada,Tobacco products and smokers' supplies,0.96,0.94,1.44,1.28,1.23,1.11,1.01
+Canada,Recreational cannabis,..,0.53,0.5,0.52,0.35,0.4,0.39
+Ontario,Food purchased from stores,10.59,10.78,11.05,10.47,10.13,9.85,10.46
+Ontario,Food purchased from restaurants,4.64,4.83,4.29,4.62,5.4,5.87,6.12
+Ontario,Rented accommodation,6.57,6.77,6.54,6.45,6.73,7.6,7.48
+Ontario,Owned accommodation,18.05,18.81,22.58,22.79,20.43,20.48,20.34
+Ontario,"Water, fuel and electricity",4.54,3.89,3.72,3.61,3.51,3.31,3.06
+Ontario,"Household operations, furnishings and equipment",12.87,12.49,14.83,14.44,14.53,12.9,13.36
+Ontario,Clothing and footwear,5.59,5.26,3.63,3.9,4.38,4.25,4.25
+Ontario,Transportation,19.49,19.8,16.09,16.72,16.23,16.89,16.71
+Ontario,Health and personal care,4.64,4.35,4.39,4.23,4.67,4.92,4.88
+Ontario,"Recreation, education and reading",10.83,10.28,8.91,9.01,10.06,10.43,9.92
+Ontario,Alcoholic beverages,1.48,1.49,2.36,2.37,2.59,2.3,2.26
+Ontario,Tobacco products and smokers' supplies,0.71,0.7,1.07,0.93,1.01,0.79,0.75
+Ontario,Recreational cannabis,..,0.55,0.53,0.46,0.35,0.41,0.41
+Manitoba,Food purchased from stores,10.58,11.03,11.68,11.33,11.56,11.43,11.03
+Manitoba,Food purchased from restaurants,5.12,4.84,4.76,4.62,5.19,5.44,5.27
+Manitoba,Rented accommodation,4.18,5.43,6.27,6.25,6.38,6.53,6.44
+Manitoba,Owned accommodation,15.73,14.54,15.14,14.84,13.23,13.49,14.43
+Manitoba,"Water, fuel and electricity",4.64,4.03,4.35,4.53,4.46,3.92,3.52
+Manitoba,"Household operations, furnishings and equipment",13.78,13.77,15.26,15.42,14.78,14.22,14.1
+Manitoba,Clothing and footwear,5.39,5.36,3.8,4.22,4.51,4.83,4.73
+Manitoba,Transportation,21.75,21.69,17.01,18.34,17.44,17.72,17.85
+Manitoba,Health and personal care,5.28,4.87,5.14,4.72,5.66,5.59,5.85
+Manitoba,"Recreation, education and reading",10.73,11.04,11.14,10.62,12.14,12.23,12.01
+Manitoba,Alcoholic beverages,1.67,1.45,3,3.05,2.9,2.84,3.03
+Manitoba,Tobacco products and smokers' supplies,1.16,1.4,2.09,1.52,1.35,1.31,1.25
+Manitoba,Recreational cannabis,..,0.57,0.37,0.53,0.39,0.46,0.48
+Alberta,Food purchased from stores,10.47,11.01,12.18,11.13,10.74,10.87,10.38
+Alberta,Food purchased from restaurants,5.48,5.58,5.47,5.29,6.16,6.34,5.81
+Alberta,Rented accommodation,6.22,5.68,5.77,5.81,5.91,5.49,6.12
+Alberta,Owned accommodation,15.35,15.48,16.55,15.83,16.14,18.02,19.12
+Alberta,"Water, fuel and electricity",4.16,5.09,4.03,4.14,3.85,3.67,3.48
+Alberta,"Household operations, furnishings and equipment",13.48,12.93,15.33,15.26,15.03,13.67,13.6
+Alberta,Clothing and footwear,5.76,5.15,4,4.73,5.42,4.86,4.22
+Alberta,Transportation,20.03,20.28,15.98,17.63,16.97,17.51,17.62
+Alberta,Health and personal care,4.9,4.81,4.73,4.99,4.76,4.73,4.86
+Alberta,"Recreation, education and reading",11.31,10.49,10.37,9.63,10.03,10,10.35
+Alberta,Alcoholic beverages,1.75,1.84,2.83,2.9,2.75,2.65,2.41
+Alberta,Tobacco products and smokers' supplies,1.09,1.14,2.25,1.97,1.73,1.66,1.52
+Alberta,Recreational cannabis,..,0.51,0.5,0.69,0.52,0.54,0.51
+British Columbia,Food purchased from stores,10.65,10.56,11.33,10.7,11.2,10.42,10.17
+British Columbia,Food purchased from restaurants,5.57,5.62,4.12,4.51,5.67,6.09,6.2
+British Columbia,Rented accommodation,6.71,7.16,7.38,8.38,9.1,8.56,9.2
+British Columbia,Owned accommodation,18.97,19.77,22.68,22.31,20.11,22.15,21.54
+British Columbia,"Water, fuel and electricity",3.21,2.91,2.88,2.35,2.17,2.33,2.24
+British Columbia,"Household operations, furnishings and equipment",12.09,12.14,14.65,14.26,13.67,12.61,12.63
+British Columbia,Clothing and footwear,4.92,4.63,4.08,4.4,4.7,4.45,4.36
+British Columbia,Transportation,18.41,19.08,13.72,14.54,14.35,14.36,15.03
+British Columbia,Health and personal care,5.06,4.73,4.52,4.14,4.75,4.61,4.23
+British Columbia,"Recreation, education and reading",12.1,10.48,9.51,9.67,9.69,10.4,10.67
+British Columbia,Alcoholic beverages,1.46,1.66,3.23,3.03,2.95,2.63,2.44
+British Columbia,Tobacco products and smokers' supplies,0.86,0.7,1.3,1.14,1.28,1,0.87
+British Columbia,Recreational cannabis,..,0.54,0.59,0.57,0.37,0.41,0.41
