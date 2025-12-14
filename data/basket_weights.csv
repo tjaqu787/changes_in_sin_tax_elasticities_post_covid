@@ -11,7 +11,7 @@ Canada,Health and personal care,5,4.79,4.68,4.62,5.03,5.23,5.05
 Canada,"Recreation, education and reading",10.89,10.24,9.4,9.29,9.92,10.27,10.12
 Canada,Alcoholic beverages,1.67,1.74,2.85,2.83,2.94,2.69,2.58
 Canada,Tobacco products and smokers' supplies,0.96,0.94,1.44,1.28,1.23,1.11,1.01
-Canada,Recreational cannabis,..,0.53,0.5,0.52,0.35,0.4,0.39
+Canada,Recreational cannabis,0.53,0.53,0.5,0.52,0.35,0.4,0.39
 Ontario,Food purchased from stores,10.59,10.78,11.05,10.47,10.13,9.85,10.46
 Ontario,Food purchased from restaurants,4.64,4.83,4.29,4.62,5.4,5.87,6.12
 Ontario,Rented accommodation,6.57,6.77,6.54,6.45,6.73,7.6,7.48
@@ -24,7 +24,7 @@ Ontario,Health and personal care,4.64,4.35,4.39,4.23,4.67,4.92,4.88
 Ontario,"Recreation, education and reading",10.83,10.28,8.91,9.01,10.06,10.43,9.92
 Ontario,Alcoholic beverages,1.48,1.49,2.36,2.37,2.59,2.3,2.26
 Ontario,Tobacco products and smokers' supplies,0.71,0.7,1.07,0.93,1.01,0.79,0.75
-Ontario,Recreational cannabis,..,0.55,0.53,0.46,0.35,0.41,0.41
+Ontario,Recreational cannabis,0.55,0.55,0.53,0.46,0.35,0.41,0.41
 Manitoba,Food purchased from stores,10.58,11.03,11.68,11.33,11.56,11.43,11.03
 Manitoba,Food purchased from restaurants,5.12,4.84,4.76,4.62,5.19,5.44,5.27
 Manitoba,Rented accommodation,4.18,5.43,6.27,6.25,6.38,6.53,6.44
@@ -37,7 +37,7 @@ Manitoba,Health and personal care,5.28,4.87,5.14,4.72,5.66,5.59,5.85
 Manitoba,"Recreation, education and reading",10.73,11.04,11.14,10.62,12.14,12.23,12.01
 Manitoba,Alcoholic beverages,1.67,1.45,3,3.05,2.9,2.84,3.03
 Manitoba,Tobacco products and smokers' supplies,1.16,1.4,2.09,1.52,1.35,1.31,1.25
-Manitoba,Recreational cannabis,..,0.57,0.37,0.53,0.39,0.46,0.48
+Manitoba,Recreational cannabis,0.57,0.57,0.37,0.53,0.39,0.46,0.48
 Alberta,Food purchased from stores,10.47,11.01,12.18,11.13,10.74,10.87,10.38
 Alberta,Food purchased from restaurants,5.48,5.58,5.47,5.29,6.16,6.34,5.81
 Alberta,Rented accommodation,6.22,5.68,5.77,5.81,5.91,5.49,6.12
@@ -50,7 +50,7 @@ Alberta,Health and personal care,4.9,4.81,4.73,4.99,4.76,4.73,4.86
 Alberta,"Recreation, education and reading",11.31,10.49,10.37,9.63,10.03,10,10.35
 Alberta,Alcoholic beverages,1.75,1.84,2.83,2.9,2.75,2.65,2.41
 Alberta,Tobacco products and smokers' supplies,1.09,1.14,2.25,1.97,1.73,1.66,1.52
-Alberta,Recreational cannabis,..,0.51,0.5,0.69,0.52,0.54,0.51
+Alberta,Recreational cannabis,0.51,0.51,0.5,0.69,0.52,0.54,0.51
 British Columbia,Food purchased from stores,10.65,10.56,11.33,10.7,11.2,10.42,10.17
 British Columbia,Food purchased from restaurants,5.57,5.62,4.12,4.51,5.67,6.09,6.2
 British Columbia,Rented accommodation,6.71,7.16,7.38,8.38,9.1,8.56,9.2
@@ -63,4 +63,4 @@ British Columbia,Health and personal care,5.06,4.73,4.52,4.14,4.75,4.61,4.23
 British Columbia,"Recreation, education and reading",12.1,10.48,9.51,9.67,9.69,10.4,10.67
 British Columbia,Alcoholic beverages,1.46,1.66,3.23,3.03,2.95,2.63,2.44
 British Columbia,Tobacco products and smokers' supplies,0.86,0.7,1.3,1.14,1.28,1,0.87
-British Columbia,Recreational cannabis,..,0.54,0.59,0.57,0.37,0.41,0.41
+British Columbia,Recreational cannabis,0.54,0.54,0.59,0.57,0.37,0.41,0.41
