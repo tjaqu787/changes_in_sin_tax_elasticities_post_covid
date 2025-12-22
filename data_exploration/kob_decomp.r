@@ -113,8 +113,6 @@ alcohol_basket <- basket %>%
     log_alcohol_basket = log(alcohol_basket_weight)
   )
 
-# 2.2: Cannabis Variables
-# Get basket weight
 
 # 2.3: Housing Burden - KEEP FOR OPTIONAL ROBUSTNESS CHECKS
 housing_rented <- basket %>%
@@ -312,7 +310,7 @@ if(pooling_test$`Pr(>F)`[2] < 0.05) {
 # Model specifications to test
 model_specs <- list(
   
-  # Model 1: Basic - Log CPI + Log Basket, binary cannabis
+  # Model 1: Basic - Log CPI + Log Basket, 
   basic = list(
     formula = "~ share_65_years_and_older + log_cpi_alcohol + log_alcohol_basket + year_centered",
     name = "Basic: Log CPI + Log Basket"
@@ -467,7 +465,7 @@ regression_decomp <- function(data, province, beverage_type = "alcohol_Total_alc
         trend_effect <- 0
       }
       
-      return(c(age_effect, cannabis_effect, log_cpi_effect, log_basket_effect,
+      return(c(age_effect, log_cpi_effect, log_basket_effect,
                cpi_interact_effect, basket_interact_effect,
                housing_owned_effect, housing_rented_effect,
                covid_effect, trend_effect))
@@ -488,7 +486,6 @@ regression_decomp <- function(data, province, beverage_type = "alcohol_Total_alc
       model_spec = spec$name,
       actual_change = actual_change,
       age_effect = NA, age_se = NA,
-      cannabis_effect = NA, cannabis_se = NA,
       log_cpi_effect = NA, log_cpi_se = NA,
       log_basket_effect = NA, log_basket_se = NA,
       cpi_interact_effect = NA, cpi_interact_se = NA,
@@ -519,7 +516,6 @@ regression_decomp <- function(data, province, beverage_type = "alcohol_Total_alc
       model_spec = spec$name,
       actual_change = actual_change,
       age_effect = NA, age_se = NA,
-      cannabis_effect = NA, cannabis_se = NA,
       log_cpi_effect = NA, log_cpi_se = NA,
       log_basket_effect = NA, log_basket_se = NA,
       cpi_interact_effect = NA, cpi_interact_se = NA,
@@ -550,7 +546,6 @@ regression_decomp <- function(data, province, beverage_type = "alcohol_Total_alc
       model_spec = spec$name,
       actual_change = actual_change,
       age_effect = NA, age_se = NA,
-      cannabis_effect = NA, cannabis_se = NA,
       log_cpi_effect = NA, log_cpi_se = NA,
       log_basket_effect = NA, log_basket_se = NA,
       cpi_interact_effect = NA, cpi_interact_se = NA,
@@ -568,18 +563,22 @@ regression_decomp <- function(data, province, beverage_type = "alcohol_Total_alc
   # Calculate means and SEs
   boot_means <- rowMeans(boot_results, na.rm = TRUE)
   boot_ses <- apply(boot_results, 1, sd, na.rm = TRUE)
-  
+
   # Calculate explained vs unexplained
   # Price effects: CPI + basket + their interactions
-  price_effects <- sum(boot_means[3:6], na.rm = TRUE)
-  # Total explained: Age + cannabis + price effects
-  total_explained <- sum(boot_means[1:6], na.rm = TRUE)
+  # After removing cannabis, indices shift:
+  # [1] = age, [2] = log_cpi, [3] = log_basket, [4] = cpi_interact, 
+  # [5] = basket_interact, [6] = housing_owned, [7] = housing_rented,
+  # [8] = covid, [9] = trend
+  price_effects <- sum(boot_means[2:5], na.rm = TRUE)
+  # Total explained: Age + price effects
+  total_explained <- sum(boot_means[1:5], na.rm = TRUE)
   # Unexplained: Actual - explained - housing - COVID - trend
-  unexplained <- actual_change - total_explained - boot_means[7] - boot_means[8] - boot_means[9] - boot_means[10]
-  
+  unexplained <- actual_change - total_explained - boot_means[6] - boot_means[7] - boot_means[8] - boot_means[9]
+
   # Standard errors
-  se_explained <- sqrt(sum(boot_ses[1:6]^2, na.rm = TRUE))
-  se_unexplained <- sqrt(se_explained^2 + boot_ses[7]^2 + boot_ses[8]^2 + boot_ses[9]^2 + boot_ses[10]^2)
+  se_explained <- sqrt(sum(boot_ses[1:5]^2, na.rm = TRUE))
+  se_unexplained <- sqrt(se_explained^2 + boot_ses[6]^2 + boot_ses[7]^2 + boot_ses[8]^2 + boot_ses[9]^2)
   
   tibble(
     Geography = province,
@@ -588,8 +587,6 @@ regression_decomp <- function(data, province, beverage_type = "alcohol_Total_alc
     actual_change = actual_change,
     age_effect = boot_means[1],
     age_se = boot_ses[1],
-    cannabis_effect = boot_means[2],
-    cannabis_se = boot_ses[2],
     log_cpi_effect = boot_means[3],
     log_cpi_se = boot_ses[3],
     log_basket_effect = boot_means[4],
@@ -682,13 +679,11 @@ format_results <- function(results_df, model_name, bev_name) {
     mutate(
       # Calculate t-statistics
       t_age = age_effect / age_se,
-      t_cannabis = cannabis_effect / cannabis_se,
       t_log_cpi = log_cpi_effect / log_cpi_se,
       t_log_basket = log_basket_effect / log_basket_se,
       t_covid = covid_effect / covid_se,
       # Calculate p-values (two-tailed, df = n_years - k)
       p_age = 2 * pt(abs(t_age), df = 8, lower.tail = FALSE),
-      p_cannabis = 2 * pt(abs(t_cannabis), df = 8, lower.tail = FALSE),
       p_log_cpi = 2 * pt(abs(t_log_cpi), df = 8, lower.tail = FALSE),
       p_log_basket = 2 * pt(abs(t_log_basket), df = 8, lower.tail = FALSE),
       p_covid = 2 * pt(abs(t_covid), df = 8, lower.tail = FALSE)
@@ -701,13 +696,6 @@ format_results <- function(results_df, model_name, bev_name) {
         p_age < 0.01 ~ "**",
         p_age < 0.05 ~ "*",
         p_age < 0.1 ~ ".",
-        TRUE ~ ""
-      )),
-      Cannabis = sprintf("%.3f%s", cannabis_effect, case_when(
-        p_cannabis < 0.001 ~ "***",
-        p_cannabis < 0.01 ~ "**",
-        p_cannabis < 0.05 ~ "*",
-        p_cannabis < 0.1 ~ ".",
         TRUE ~ ""
       )),
       `Log CPI` = sprintf("%.3f%s", log_cpi_effect, case_when(
@@ -788,7 +776,7 @@ write_csv(all_results, "decomposition_detailed_v2.csv")
 # Save summary by beverage type
 summary_by_beverage <- all_results %>%
   filter(model_spec == "With COVID Dummy") %>%
-  select(Geography, beverage_type, actual_change, age_effect, cannabis_effect,
+  select(Geography, beverage_type, actual_change, age_effect, 
          log_cpi_effect, log_basket_effect, price_effects, covid_effect, 
          trend_effect, unexplained_behavioral, pct_explained)
 
