@@ -164,10 +164,10 @@ age_structure <- age_structure %>%
 # Get consumption by beverage type
 consumption_by_type <- consumption_long %>%
   filter(
-    `Type of beverage` %in% c("Total alcoholic beverages", "Beer", "Wines", "Spirits"),
+    `beverage_type` %in% c("Total alcoholic beverages", "Beer", "Wines", "Spirits"),
     metric == "Absolute volume for total per capita sales"
   ) %>%
-  select(Geography, year, beverage_type = `Type of beverage`, consumption_per_capita = value) %>%
+  select(Geography, year, beverage_type = `beverage_type`, consumption_per_capita = value) %>%
   pivot_wider(
     names_from = beverage_type,
     values_from = consumption_per_capita,
@@ -213,8 +213,6 @@ cor_vars <- analysis_data %>%
     log_cpi_alcohol,
     log_alcohol_basket,
     `share_65_years_and_older`,
-    cannabis_basket_weight,
-    post_cannabis_legal,
     post_covid
   ) %>%
   drop_na()
@@ -232,7 +230,6 @@ vif_data <- analysis_data %>% drop_na()
 model_vif_1 <- lm(
   `alcohol_Total_alcoholic_beverages` ~ 
     `share_65_years_and_older` + 
-    cannabis_basket_weight +
     log_cpi_alcohol +
     log_alcohol_basket +
     year_centered,
@@ -245,7 +242,6 @@ print(calculate_vif(model_vif_1))
 model_vif_2 <- lm(
   `alcohol_Total_alcoholic_beverages` ~ 
     `share_65_years_and_older` + 
-    cannabis_basket_weight +
     log_cpi_alcohol +
     log_alcohol_basket +
     log_cpi_x_65plus +
@@ -260,7 +256,6 @@ print(calculate_vif(model_vif_2))
 model_vif_3 <- lm(
   `alcohol_Total_alcoholic_beverages` ~ 
     `share_65_years_and_older` + 
-    cannabis_basket_weight +
     log_cpi_alcohol +
     log_alcohol_basket +
     log_housing_owned +
@@ -281,7 +276,6 @@ cat("\n\n=== TESTING POOLING ASSUMPTION ===\n\n")
 model_pooled <- lm(
   `alcohol_Total_alcoholic_beverages` ~ 
     `share_65_years_and_older` + 
-    post_cannabis_legal +
     log_cpi_alcohol +
     log_alcohol_basket +
     post_covid +
@@ -292,7 +286,6 @@ model_pooled <- lm(
 model_interact <- lm(
   `alcohol_Total_alcoholic_beverages` ~ 
     `share_65_years_and_older` + 
-    post_cannabis_legal +
     log_cpi_alcohol * Geography +
     log_alcohol_basket * Geography +
     post_covid +
@@ -321,28 +314,27 @@ model_specs <- list(
   
   # Model 1: Basic - Log CPI + Log Basket, binary cannabis
   basic = list(
-    formula = "~ share_65_years_and_older + post_cannabis_legal + 
-               log_cpi_alcohol + log_alcohol_basket + year_centered",
+    formula = "~ share_65_years_and_older + log_cpi_alcohol + log_alcohol_basket + year_centered",
     name = "Basic: Log CPI + Log Basket"
   ),
   
   # Model 2: With COVID dummy
   with_covid = list(
-    formula = "~ share_65_years_and_older + post_cannabis_legal + 
+    formula = "~ share_65_years_and_older + 
                log_cpi_alcohol + log_alcohol_basket + post_covid + year_centered",
     name = "With COVID Dummy"
   ),
   
   # Model 3: No time trend
   no_trend = list(
-    formula = "~ share_65_years_and_older + post_cannabis_legal + 
+    formula = "~ share_65_years_and_older + 
                log_cpi_alcohol + log_alcohol_basket + post_covid",
     name = "No Time Trend"
   ),
   
   # Model 4: With interactions
   with_interactions = list(
-    formula = "~ share_65_years_and_older + post_cannabis_legal + 
+    formula = "~ share_65_years_and_older + 
                log_cpi_alcohol + log_alcohol_basket + 
                log_cpi_x_65plus + log_basket_x_65plus +
                post_covid + year_centered",
@@ -351,7 +343,7 @@ model_specs <- list(
   
   # Model 5: With housing controls (robustness)
   with_housing = list(
-    formula = "~ share_65_years_and_older + post_cannabis_legal + 
+    formula = "~ share_65_years_and_older + 
                log_cpi_alcohol + log_alcohol_basket + 
                log_housing_owned + log_housing_rented +
                post_covid + year_centered",
@@ -413,17 +405,6 @@ regression_decomp <- function(data, province, beverage_type = "alcohol_Total_alc
                            coefs["share_65_years_and_older"] * delta_65plus,
                            0)
       
-      # Cannabis effects
-      if("cannabis_basket_weight" %in% names(coefs)) {
-        delta_cannabis <- ifelse(is.na(comp$cannabis_basket_weight) | is.na(base$cannabis_basket_weight), 
-                                  0, comp$cannabis_basket_weight - base$cannabis_basket_weight)
-        cannabis_effect <- coefs["cannabis_basket_weight"] * delta_cannabis
-      } else if("post_cannabis_legal" %in% names(coefs)) {
-        delta_cannabis <- comp$post_cannabis_legal - base$post_cannabis_legal
-        cannabis_effect <- coefs["post_cannabis_legal"] * delta_cannabis
-      } else {
-        cannabis_effect <- 0
-      }
       
       # Log CPI effect
       if("log_cpi_alcohol" %in% names(coefs)) {
