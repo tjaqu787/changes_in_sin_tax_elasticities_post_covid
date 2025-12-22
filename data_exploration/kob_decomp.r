@@ -8,7 +8,37 @@ library(fixest)
 library(scales)
 library(patchwork)
 library(readr)
-library(car)  # For VIF diagnostics
+
+# Custom VIF function (avoids car package dependency hell)
+calculate_vif <- function(model) {
+  # Get model matrix (design matrix)
+  X <- model.matrix(model)[, -1]  # Remove intercept
+  
+  # Calculate VIF for each predictor
+  vif_values <- numeric(ncol(X))
+  names(vif_values) <- colnames(X)
+  
+  for(i in 1:ncol(X)) {
+    # Regress predictor i on all other predictors
+    y <- X[, i]
+    x_others <- X[, -i, drop = FALSE]
+    
+    # Handle case of single predictor
+    if(ncol(x_others) == 0) {
+      vif_values[i] <- 1
+    } else {
+      r_squared <- tryCatch({
+        lm_temp <- lm(y ~ x_others)
+        summary(lm_temp)$r.squared
+      }, error = function(e) 0)
+      
+      # VIF = 1 / (1 - R²)
+      vif_values[i] <- 1 / (1 - r_squared)
+    }
+  }
+  
+  return(vif_values)
+}
 
 # ==============================================================================
 # PART 1: DATA PREPARATION
@@ -152,7 +182,7 @@ age_structure <- age_structure %>%
 # Get consumption by beverage type
 consumption_by_type <- consumption_long %>%
   filter(
-    beverage_type %in% c("Total alcoholic beverages", "Beer", "Wine", "Spirits"),
+    beverage_type %in% c("Total alcoholic beverages", "Beer", "Wines", "Spirits"),
     metric == "Absolute volume for total per capita sales"
   ) %>%
   select(Geography, year, beverage_type, consumption_per_capita = value) %>%
@@ -160,8 +190,16 @@ consumption_by_type <- consumption_long %>%
     names_from = beverage_type,
     values_from = consumption_per_capita,
     names_prefix = "alcohol_"
-  ) %>%
+  )
+
+# Standardize column names (remove spaces, keep Wines as Wine for consistency)
+consumption_by_type <- consumption_by_type %>%
   rename_with(~str_replace_all(., " ", "_"), starts_with("alcohol_"))
+
+# Check what columns we actually have
+actual_beverage_cols <- names(consumption_by_type)[grepl("^alcohol_", names(consumption_by_type))]
+cat("\nActual beverage columns created:\n")
+print(actual_beverage_cols)
 
 # Merge all components
 analysis_data <- consumption_by_type %>%
@@ -233,7 +271,7 @@ model_vif_1 <- lm(
   data = vif_data
 )
 cat("Model 1: Level housing variables\n")
-print(vif(model_vif_1))
+print(calculate_vif(model_vif_1))
 
 # Model 2: Log housing
 model_vif_2 <- lm(
@@ -246,7 +284,7 @@ model_vif_2 <- lm(
   data = vif_data
 )
 cat("\n\nModel 2: Log housing variables\n")
-print(vif(model_vif_2))
+print(calculate_vif(model_vif_2))
 
 # Model 3: With interactions
 model_vif_3 <- lm(
@@ -261,7 +299,7 @@ model_vif_3 <- lm(
   data = vif_data
 )
 cat("\n\nModel 3: With age × housing interactions\n")
-print(vif(model_vif_3))
+print(calculate_vif(model_vif_3))
 
 # ==============================================================================
 # PART 5: TEST POOLING ASSUMPTION
@@ -311,48 +349,32 @@ if(pooling_test$`Pr(>F)`[2] < 0.05) {
 # Model specifications to test
 model_specs <- list(
   
-  # Baseline: Your original model
-  baseline = list(
-    formula = "~ share_65_years_and_older + cannabis_basket_weight + 
-               housing_owned_weight + housing_rented_weight + year_centered",
-    name = "Baseline (Levels)"
-  ),
-  
-  # Model 2: Log housing
-  log_housing = list(
-    formula = "~ share_65_years_and_older + cannabis_basket_weight + 
-               log_housing_owned + log_housing_rented + year_centered",
-    name = "Log Housing"
-  ),
-  
-  # Model 3: Binary cannabis
-  binary_cannabis = list(
+  # Model 1: Log housing, binary cannabis
+  log_binary = list(
     formula = "~ share_65_years_and_older + post_cannabis_legal + 
                log_housing_owned + log_housing_rented + year_centered",
-    name = "Binary Cannabis"
+    name = "Log Housing + Binary Cannabis"
   ),
   
-  # Model 4: With COVID dummy
+  # Model 2: With COVID dummy
   with_covid = list(
     formula = "~ share_65_years_and_older + post_cannabis_legal + 
                log_housing_owned + log_housing_rented + post_covid + year_centered",
     name = "With COVID Dummy"
   ),
   
-  # Model 5: With age interactions
-  age_interact = list(
-    formula = "~ share_65_years_and_older + post_cannabis_legal + 
-               log_housing_owned + log_housing_rented + 
-               log_housing_owned_x_65plus + log_housing_rented_x_65plus + 
-               post_covid + year_centered",
-    name = "Age × Housing Interactions"
-  ),
-  
-  # Model 6: No time trend (let housing absorb it)
+  # Model 3: No time trend (let housing absorb it)
   no_trend = list(
     formula = "~ share_65_years_and_older + post_cannabis_legal + 
                log_housing_owned + log_housing_rented + post_covid",
     name = "No Time Trend"
+  ),
+  
+  # Model 4: Only owned housing (drop rented to reduce multicollinearity)
+  owned_only = list(
+    formula = "~ share_65_years_and_older + post_cannabis_legal + 
+               log_housing_owned + post_covid + year_centered",
+    name = "Owned Housing Only"
   )
 )
 
@@ -400,10 +422,15 @@ regression_decomp <- function(data, province, beverage_type = "alcohol_Total_alc
       base <- boot_sample %>% filter(year == baseline_year) %>% slice(1)
       comp <- boot_sample %>% filter(year == comparison_year) %>% slice(1)
       
-      if(nrow(base) == 0 | nrow(comp) == 0) return(rep(NA, 10))
+      if(nrow(base) == 0 | nrow(comp) == 0) return(rep(NA_real_, 8))
       
       # Calculate deltas for each variable
       delta_65plus <- comp$`share_65_years_and_older` - base$`share_65_years_and_older`
+      
+      # Age effect
+      age_effect <- ifelse("share_65_years_and_older" %in% names(coefs),
+                           coefs["share_65_years_and_older"] * delta_65plus,
+                           0)
       
       # Cannabis effects
       if("cannabis_basket_weight" %in% names(coefs)) {
@@ -417,31 +444,31 @@ regression_decomp <- function(data, province, beverage_type = "alcohol_Total_alc
         cannabis_effect <- 0
       }
       
-      # Housing effects
+      # Housing effects - owned
       if("log_housing_owned" %in% names(coefs)) {
         delta_owned <- log(comp$housing_owned_weight) - log(base$housing_owned_weight)
-        delta_rented <- log(comp$housing_rented_weight) - log(base$housing_rented_weight)
         housing_owned_effect <- coefs["log_housing_owned"] * delta_owned
-        housing_rented_effect <- coefs["log_housing_rented"] * delta_rented
-      } else {
+      } else if("housing_owned_weight" %in% names(coefs)) {
         delta_owned <- comp$housing_owned_weight - base$housing_owned_weight
-        delta_rented <- comp$housing_rented_weight - base$housing_rented_weight
         housing_owned_effect <- coefs["housing_owned_weight"] * delta_owned
-        housing_rented_effect <- coefs["housing_rented_weight"] * delta_rented
+      } else {
+        housing_owned_effect <- 0
       }
       
-      # Interaction effects
-      if("log_housing_owned_x_65plus" %in% names(coefs)) {
-        delta_owned_interact <- (log(comp$housing_owned_weight) * comp$`share_65_years_and_older`) - 
-                                 (log(base$housing_owned_weight) * base$`share_65_years_and_older`)
-        delta_rented_interact <- (log(comp$housing_rented_weight) * comp$`share_65_years_and_older`) - 
-                                  (log(base$housing_rented_weight) * base$`share_65_years_and_older`)
-        interact_owned_effect <- coefs["log_housing_owned_x_65plus"] * delta_owned_interact
-        interact_rented_effect <- coefs["log_housing_rented_x_65plus"] * delta_rented_interact
+      # Housing effects - rented
+      if("log_housing_rented" %in% names(coefs)) {
+        delta_rented <- log(comp$housing_rented_weight) - log(base$housing_rented_weight)
+        housing_rented_effect <- coefs["log_housing_rented"] * delta_rented
+      } else if("housing_rented_weight" %in% names(coefs)) {
+        delta_rented <- comp$housing_rented_weight - base$housing_rented_weight
+        housing_rented_effect <- coefs["housing_rented_weight"] * delta_rented
       } else {
-        interact_owned_effect <- 0
-        interact_rented_effect <- 0
+        housing_rented_effect <- 0
       }
+      
+      # Interaction effects (set to 0 since we removed them)
+      interact_owned_effect <- 0
+      interact_rented_effect <- 0
       
       # COVID effect
       if("post_covid" %in% names(coefs)) {
@@ -458,18 +485,66 @@ regression_decomp <- function(data, province, beverage_type = "alcohol_Total_alc
         trend_effect <- 0
       }
       
-      # Age effect
-      age_effect <- coefs["share_65_years_and_older"] * delta_65plus
-      
       return(c(age_effect, cannabis_effect, housing_owned_effect, housing_rented_effect,
                interact_owned_effect, interact_rented_effect, covid_effect, trend_effect))
     }, error = function(e) {
-      return(rep(NA, 8))
+      return(rep(NA_real_, 8))
     })
   }
   
   # Prepare data
   boot_data <- df %>% drop_na()
+  
+  # Check if we have enough data
+  if(nrow(boot_data) < 5) {
+    warning(paste("Insufficient data for", province, "-", y_var, ": only", nrow(boot_data), "observations"))
+    return(tibble(
+      Geography = province,
+      beverage_type = y_var,
+      model_spec = spec$name,
+      actual_change = actual_change,
+      age_effect = NA, age_se = NA,
+      cannabis_effect = NA, cannabis_se = NA,
+      housing_owned_effect = NA, housing_owned_se = NA,
+      housing_rented_effect = NA, housing_rented_se = NA,
+      interact_owned_effect = NA, interact_owned_se = NA,
+      interact_rented_effect = NA, interact_rented_se = NA,
+      covid_effect = NA, covid_se = NA,
+      trend_effect = NA, trend_se = NA,
+      total_explained = NA, se_explained = NA,
+      unexplained_behavioral = NA, se_unexplained = NA,
+      pct_explained = NA
+    ))
+  }
+  
+  # Test that the model can be fit once before bootstrap
+  test_formula <- paste(y_var, spec$formula)
+  test_model <- tryCatch({
+    lm(as.formula(test_formula), data = boot_data)
+  }, error = function(e) {
+    warning(paste("Model formula failed for", province, "-", y_var, ":", e$message))
+    return(NULL)
+  })
+  
+  if(is.null(test_model)) {
+    return(tibble(
+      Geography = province,
+      beverage_type = y_var,
+      model_spec = spec$name,
+      actual_change = actual_change,
+      age_effect = NA, age_se = NA,
+      cannabis_effect = NA, cannabis_se = NA,
+      housing_owned_effect = NA, housing_owned_se = NA,
+      housing_rented_effect = NA, housing_rented_se = NA,
+      interact_owned_effect = NA, interact_owned_se = NA,
+      interact_rented_effect = NA, interact_rented_se = NA,
+      covid_effect = NA, covid_se = NA,
+      trend_effect = NA, trend_se = NA,
+      total_explained = NA, se_explained = NA,
+      unexplained_behavioral = NA, se_unexplained = NA,
+      pct_explained = NA
+    ))
+  }
   
   # Run bootstrap
   set.seed(42)
@@ -477,6 +552,28 @@ regression_decomp <- function(data, province, beverage_type = "alcohol_Total_alc
     indices <- sample(nrow(boot_data), replace = TRUE)
     boot_decomp(boot_data, indices)
   })
+  
+  # Check if bootstrap failed
+  if(!is.matrix(boot_results)) {
+    warning(paste("Bootstrap failed for", province, "-", y_var))
+    return(tibble(
+      Geography = province,
+      beverage_type = y_var,
+      model_spec = spec$name,
+      actual_change = actual_change,
+      age_effect = NA, age_se = NA,
+      cannabis_effect = NA, cannabis_se = NA,
+      housing_owned_effect = NA, housing_owned_se = NA,
+      housing_rented_effect = NA, housing_rented_se = NA,
+      interact_owned_effect = NA, interact_owned_se = NA,
+      interact_rented_effect = NA, interact_rented_se = NA,
+      covid_effect = NA, covid_se = NA,
+      trend_effect = NA, trend_se = NA,
+      total_explained = NA, se_explained = NA,
+      unexplained_behavioral = NA, se_unexplained = NA,
+      pct_explained = NA
+    ))
+  }
   
   # Calculate means and SEs
   boot_means <- rowMeans(boot_results, na.rm = TRUE)
@@ -525,9 +622,24 @@ regression_decomp <- function(data, province, beverage_type = "alcohol_Total_alc
 
 cat("\n\n=== RUNNING DECOMPOSITIONS ===\n\n")
 
-# Define beverage types to analyze
-beverages <- c("alcohol_Total_alcoholic_beverages", "alcohol_Beer", "alcohol_Wine", "alcohol_Spirits")
-beverage_names <- c("Total", "Beer", "Wine", "Spirits")
+# Define beverage types to analyze - check what actually exists
+available_beverages <- names(analysis_data)[grepl("^alcohol_", names(analysis_data))]
+
+cat("\nAvailable beverage types for analysis:\n")
+print(available_beverages)
+
+# Create readable names
+beverage_names <- str_replace(available_beverages, "alcohol_", "")
+
+# Filter to only valid beverages (that actually have data)
+valid_beverages <- available_beverages[sapply(available_beverages, function(bev) {
+  sum(!is.na(analysis_data[[bev]])) > 0
+})]
+
+valid_names <- str_replace(valid_beverages, "alcohol_", "")
+
+cat("\nBeverages with valid data:\n")
+print(valid_beverages)
 
 # Run decompositions for each province, beverage type, and model specification
 cat("Running bootstrap decompositions (this will take several minutes)...\n\n")
@@ -537,9 +649,9 @@ results_list <- list()
 for(model_name in names(model_specs)) {
   cat("\n--- Model:", model_specs[[model_name]]$name, "---\n")
   
-  for(i in seq_along(beverages)) {
-    bev <- beverages[i]
-    bev_name <- beverage_names[i]
+  for(i in seq_along(valid_beverages)) {
+    bev <- valid_beverages[i]
+    bev_name <- valid_names[i]
     
     cat("  Beverage:", bev_name, "\n")
     
@@ -633,9 +745,13 @@ format_results <- function(results_df, model_name, bev_name) {
 }
 
 # Print results for key specifications
-for(bev_name in beverage_names) {
-  format_results(all_results, "With COVID Dummy", bev_name)
-  format_results(all_results, "Age × Housing Interactions", bev_name)
+for(bev_name in valid_names) {
+  if(paste("With COVID Dummy", bev_name, sep = "_") %in% names(results_list)) {
+    format_results(all_results, "With COVID Dummy", bev_name)
+  }
+  if(paste("No Time Trend", bev_name, sep = "_") %in% names(results_list)) {
+    format_results(all_results, "No Time Trend", bev_name)
+  }
 }
 
 # ==============================================================================
