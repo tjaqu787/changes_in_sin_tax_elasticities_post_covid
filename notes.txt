@@ -14,15 +14,39 @@ manitoba had some minor changes in 2024(good enough to be a control)
 
 We're looking at if price elasticities of alcohol have changed since the pandemic. This breaks down into why people are drinking less in canada since the pandemic.  
 How much of this is price increases(use wine and cider because they skew richer), substitution(unsure how to measure this), or behavioural change(look at bar sales?).
-Potential confounds:
-	population:
-		aging country, older people drink less.
-		Record levels of immigration, eg muslim majority countries drink less
-	behavioural:
-		are people going out as much?
-		is this just substitution
-	price increase:
-		how to parse more quality vs quantity
+Potential Vairables:
+
+Demographic/Compositional
+
+Education levels: More educated populations tend to have different drinking patterns
+Urbanization shifts: Urban vs. rural drinking cultures differ
+Income inequality: Not just average income, but distribution matters
+Immigration patterns: Some countries 
+
+Behavioral/Cultural
+
+Health consciousness trends: Rise of wellness culture
+Cannabis legalization: Substitution effect in some jurisdictions
+Working patterns: Remote work changing after-work drinking culture
+
+Measurement/Definition
+
+Home consumption vs. on-premise: People drinking at home instead of bars (your substitution point)
+Type of alcohol: Shift from beer to wine/spirits affects volume measures
+Look at number of units of alcohol
+
+Economic (beyond just price)
+
+Real price of alcohol has gone up: look at price elacticities
+Disposable income after housing costs: Housing affordability crisis
+Relative price changes: Alcohol vs. other entertainment/drugs
+Craft beer/premium spirits premium: Quality-quantity tradeoff you mentioned
+
 		
 	
 Every province is seeing less drinking, we're looking at how much of this is price increases, substitution, or behavioural change. we're going to have to separate each of these 
+
+11-10-0240-01 - for incomes
+Table: 17-10-0005-01 - population
+18-10-0007-01 - basket weights
+18-10-0004-01 - CPI
