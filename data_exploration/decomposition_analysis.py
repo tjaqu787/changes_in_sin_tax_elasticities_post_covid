@@ -23,7 +23,7 @@ import json
 # CONFIGURATION
 # ==============================================================================
 
-DATA_DIR = Path("prepared_data")
+DATA_DIR = Path("data")
 OUTPUT_DIR = Path("results")
 OUTPUT_DIR.mkdir(exist_ok=True)
 
