@@ -13,12 +13,12 @@ from pathlib import Path
 # ==============================================================================
 
 DATA_DIR = Path("data")
-OUTPUT_DIR = Path("prepared_data")
+OUTPUT_DIR = Path("data")
 OUTPUT_DIR.mkdir(exist_ok=True)
 
 BASE_YEAR = 2015
 
-GEOGRAPHIES = ['British Columbia', 'Alberta', 'Ontario', 'Manitoba', 'Canada']
+GEOGRAPHIES = ['British_Columbia', 'Alberta', 'Ontario', 'Manitoba', 'Canada']
 
 # ==============================================================================
 # 1. LOAD RAW DATA
@@ -279,7 +279,7 @@ def prepare_prices(cpi_df, basket_df):
     # Filter for relevant categories only
     relevant_categories = [
         'Alcoholic_beverages',
-        'All-items',  # Overall CPI
+        'All-items',
         'Food',
         'Recreation_education_and_reading',
         'Recreational_cannabis'
@@ -371,7 +371,7 @@ def prepare_prices(cpi_df, basket_df):
 
 
 # ==============================================================================
-# 6. INTERPOLATE BASKET WEIGHTS (NEW)
+# 6. INTERPOLATE BASKET WEIGHTS 
 # ==============================================================================
 
 def interpolate_basket_weights(basket_df):
@@ -425,10 +425,10 @@ def interpolate_basket_weights(basket_df):
             merged['basket_weight'] = merged['basket_weight'].interpolate(method='linear')
             
             # Forward fill for years after last observation
-            merged['basket_weight'] = merged['basket_weight'].fillna(method='ffill')
+            merged['basket_weight'] = merged['basket_weight'].ffill()
             
             # Backward fill for years before first observation
-            merged['basket_weight'] = merged['basket_weight'].fillna(method='bfill')
+            merged['basket_weight'] = merged['basket_weight'].bfill()
             
             interpolated_list.append(merged)
     
@@ -475,12 +475,21 @@ def create_analysis_dataset(data):
     analysis = consumption.merge(demographics, on=['Geography', 'year'], how='left')
     analysis = analysis.merge(income_dist, on=['Geography', 'year'], how='left')
     analysis = analysis.merge(prices, on=['Geography', 'year'], how='left')
+    
+    # Debug: Check what price-related columns were merged
+    price_cols = [col for col in analysis.columns if 'price' in col.lower() or 'cpi' in col.lower()]
+    print(f"\nPrice-related columns after merge: {price_cols}")
+    
     analysis = analysis.merge(basket_weights, on=['Geography', 'year'], how='left')
     
     # Create derived variables
     if 'overall_cpi' in analysis.columns and 'mean_income' in analysis.columns:
         analysis['real_income'] = analysis['mean_income'] / analysis['overall_cpi'] * 100
         analysis['log_real_income'] = np.log(analysis['real_income'])
+    
+    # Log transformation of price
+    if 'real_alcohol_price' in analysis.columns:
+        analysis['log_real_alcohol_price'] = np.log(analysis['real_alcohol_price'])
     
     # Log transformation of consumption
     if 'consumption_total_alcoholic_beverages' in analysis.columns:
@@ -500,7 +509,20 @@ def create_analysis_dataset(data):
     print(f"\n✓ Final dataset: {len(analysis)} rows")
     print(f"  Time period: {analysis['year'].min()} - {analysis['year'].max()}")
     print(f"  Geographies: {', '.join(analysis['Geography'].unique())}")
-    print(f"  Complete cases: {analysis.dropna(subset=['log_consumption_total', 'log_real_alcohol_price', 'log_real_income']).shape[0]}")
+    
+    # Debug: check which key columns exist
+    key_cols = ['log_consumption_total', 'log_real_alcohol_price', 'log_real_income']
+    existing_cols = [col for col in key_cols if col in analysis.columns]
+    missing_cols = [col for col in key_cols if col not in analysis.columns]
+    
+    if missing_cols:
+        print(f"  ⚠ Missing columns: {missing_cols}")
+        print(f"  Available columns with 'log': {[c for c in analysis.columns if 'log' in c.lower()]}")
+        print(f"  Available columns with 'price': {[c for c in analysis.columns if 'price' in c.lower()]}")
+        print(f"  Available columns with 'income': {[c for c in analysis.columns if 'income' in c.lower()]}")
+    
+    if existing_cols:
+        print(f"  Complete cases: {analysis.dropna(subset=existing_cols).shape[0]}")
     
     return analysis
 
@@ -560,15 +582,25 @@ def export_summary_stats(df):
     """Create summary statistics table"""
     print("\nExporting summary statistics...")
     
-    # Summary by geography
-    summary = df.groupby('Geography').agg({
+    # Define desired columns and check which exist
+    summary_cols = {
         'consumption_total_alcoholic_beverages': ['mean', 'std', 'min', 'max'],
         'real_alcohol_price': ['mean', 'std', 'min', 'max'],
         'real_income': ['mean', 'std', 'min', 'max'],
         'share_65plus': ['mean', 'std', 'min', 'max'],
         'share_18_21': ['mean', 'std', 'min', 'max'],
         'year': ['min', 'max', 'count']
-    }).round(3)
+    }
+    
+    # Filter to only existing columns
+    existing_summary_cols = {col: aggs for col, aggs in summary_cols.items() if col in df.columns}
+    
+    if len(existing_summary_cols) == 0:
+        print("  ⚠ Warning: No summary columns found in dataframe")
+        return
+    
+    # Summary by geography
+    summary = df.groupby('Geography').agg(existing_summary_cols).round(3)
     
     summary.to_csv(OUTPUT_DIR / "summary_statistics.csv")
     print(f"✓ Saved to {OUTPUT_DIR / 'summary_statistics.csv'}")
