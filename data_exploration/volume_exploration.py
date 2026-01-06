@@ -3,12 +3,12 @@ import plotly.express as px
 import plotly.graph_objects as go
 
 # Load the CSV file
-df = pd.read_csv("data/bc_ab_mb_on_consuption.csv")
+df = pd.read_csv("data/alcohol_consuption_data.csv")
 
 print(df)
 # Rename columns for convenience and clarity
 df.rename(columns={
-    'Type of beverage': 'Beverage Type',
+    'type_of_beverage': 'Beverage Type',
     'Value, volume and absolute volume': 'Metric'
 }, inplace=True)
 
