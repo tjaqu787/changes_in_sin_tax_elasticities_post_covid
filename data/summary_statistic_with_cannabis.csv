@@ -1,0 +1,10 @@
+,consumption_total_alcoholic_beverages,consumption_total_alcoholic_beverages,consumption_total_alcoholic_beverages,consumption_total_alcoholic_beverages,share_65plus,share_65plus,share_65plus,share_65plus,share_18_21,share_18_21,share_18_21,share_18_21,cannabis_use_rate,cannabis_use_rate,cannabis_use_rate,cannabis_use_rate,cannabis_daily_rate,cannabis_daily_rate,cannabis_daily_rate,cannabis_daily_rate,year,year,year
+,mean,std,min,max,mean,std,min,max,mean,std,min,max,mean,std,min,max,mean,std,min,max,min,max,count
+Geography,,,,,,,,,,,,,,,,,,,,,,,
+Alberta,8.773,0.488,7.8,9.4,0.072,0.008,0.062,0.082,0.0,0.0,0.0,0.0,0.26,0.03,0.23,0.3,0.068,0.008,0.06,0.08,2014,2024,11
+British_Columbia,8.682,0.343,7.8,9.0,0.098,0.006,0.088,0.105,0.0,0.0,0.0,0.0,0.282,0.022,0.26,0.31,0.07,0.011,0.06,0.09,2014,2024,11
+Canada,8.009,0.27,7.3,8.3,0.094,0.006,0.084,0.101,0.0,0.0,0.0,0.0,0.242,0.022,0.22,0.27,0.059,0.009,0.05,0.07,2014,2024,11
+Manitoba,7.636,0.234,7.1,8.0,0.086,0.004,0.08,0.091,0.0,0.0,0.0,0.0,0.244,0.037,0.21,0.32,0.06,0.013,0.05,0.08,2014,2024,11
+New_Brunswick,6.991,0.375,6.5,7.7,0.112,0.009,0.097,0.122,0.0,0.0,0.0,0.0,0.236,0.063,0.17,0.3,0.06,0.024,0.04,0.11,2014,2024,11
+Nova_Scotia,7.773,0.253,7.2,8.2,0.109,0.007,0.097,0.117,0.0,0.0,0.0,0.0,0.302,0.025,0.28,0.34,0.08,0.017,0.07,0.12,2014,2024,11
+Ontario,7.464,0.28,6.8,7.8,0.092,0.005,0.083,0.097,0.0,0.0,0.0,0.0,0.259,0.021,0.24,0.29,0.064,0.007,0.06,0.08,2014,2024,11
